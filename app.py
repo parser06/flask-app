@@ -17,6 +17,7 @@ def get_charities():
         {"name": "UNICEF", "url": "https://www.unicef.org"},
         {"name": "Red Cross", "url": "https://www.redcross.org"},
         {"name": "Charity: Water", "url": "https://www.charitywater.org"},
+        {"name": "Doctors Without Borders", "url": "https://www.doctorswithoutborders.org/"},
     ])
 
 # Optional: Serve other static files (CSS, JS)

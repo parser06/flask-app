@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   dropdown.addEventListener('change', () => {
-    button.disabled = dropdown.value === "";
+    const selected = dropdown.value !== "";
+    button.disabled = !selected;
+    donateButton.disabled = !selected;
   });
 
   button.addEventListener('click', () => {

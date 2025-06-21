@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const dropdown = document.getElementById('charityDropdown');
   const button = document.getElementById('visitButton');
+  const donateButton = document.getElementById('donateButton');
 
   try {
     const response = await fetch('https://flask-app-rien.onrender.com//api/charities');
@@ -26,5 +27,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.open(selectedURL, '_blank');
     }
   });
+
+  donateButton.addEventListener('click', () => {
+    const selectedCharity = dropdown.options[dropdown.selectedIndex].text;
+    const selectedURL = dropdown.value;
+  
+    // Pass selected charity info via query params
+    const params = new URLSearchParams({
+      name: selectedCharity,
+      url: selectedURL
+    });
+  
+    window.location.href = `donate.html?${params.toString()}`;
+  });
+
+
 });
 

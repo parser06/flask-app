@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 import os
+from flask import request
+import uuid
 
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
@@ -19,6 +21,22 @@ def get_charities():
         {"name": "Charity: Water", "url": "https://www.charitywater.org"},
         {"name": "Doctors Without Borders", "url": "https://www.doctorswithoutborders.org/"},
     ])
+
+@app.route('/api/donate', methods=['POST'])
+def donate():
+    data = request.get_json()
+    name = data.get("name")
+    email = data.get("email")
+    amount = data.get("amount")
+    charity = data.get("charityName")
+    url = data.get("charityURL")
+
+    # In a real app: send email, store in DB, etc.
+    receipt_id = str(uuid.uuid4())
+
+    print(f"[DONATION] {name} donated ${amount} to {charity} ({url})")
+
+    return jsonify({"receiptId": receipt_id})
 
 # Optional: Serve other static files (CSS, JS)
 @app.route('/<path:path>')

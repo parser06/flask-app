@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Make a Donation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Donate to <span id="charityName"></span></h2>
+
+  <form id="donationForm">
+    <label>
+      Your Name:
+      <input type="text" name="name" required />
+    </label>
+    <label>
+      Email:
+      <input type="email" name="email" required />
+    </label>
+    <label>
+      Donation Amount ($):
+      <input type="number" name="amount" required min="1" />
+    </label>
+    <input type="hidden" name="charityName" id="charityNameInput" />
+    <input type="hidden" name="charityURL" id="charityURLInput" />
+    <button type="submit">Donate</button>
+  </form>
+
+  <p id="confirmationMessage"></p>
+
+  <script>
+    // Get query params
+    const params = new URLSearchParams(window.location.search);
+    const charityName = params.get('name');
+    const charityURL = params.get('url');
+
+    document.getElementById('charityName').textContent = charityName;
+    document.getElementById('charityNameInput').value = charityName;
+    document.getElementById('charityURLInput').value = charityURL;
+
+    document.getElementById('donationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      const res = await fetch('/api/donate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      document.getElementById('confirmationMessage').textContent =
+        `Thank you, ${data.name}! Your donation to ${data.charityName} has been received. Receipt ID: ${result.receiptId}`;
+    });
+  </script>
+</body>
+</html>
